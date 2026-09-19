@@ -4,6 +4,12 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [14.1.0] - 2026-09-19
+
+### Added
+- Added a leftmost `Solo Active` Odin Inspector button to `UIActivator` that deactivates direct sibling `UIActivator` components and activates the selected component in Edit Mode.
+- Added Undo, prefab-instance modification recording, and scene dirty tracking for the `Solo Active` preview operation.
+
 ## [14.0.0] - 2026-09-08
 
 ### Breaking Changes

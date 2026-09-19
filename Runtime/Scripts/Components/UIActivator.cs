@@ -15,6 +15,7 @@ using UnityEngine.UI;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 #endif
 #if DOTWEEN && UNITASK_DOTWEEN_SUPPORT
 using DOTweenAnimations = ParkMinPackages.UGUI.Components.UIActivatorAnimations.DOTweens;
@@ -420,7 +421,36 @@ namespace ParkMinPackages.UGUI.Components
 		}
 
 #if UNITY_EDITOR
-		[PropertyOrder(-100), ButtonGroup("Preview Utility", Order = -100), Button("Active"), DisableIf(nameof(IsTransitioning))] void ActiveFromInspector() {
+		[PropertyOrder(-102), ButtonGroup("Preview Utility", Order = -100), Button("Solo Active"), DisableInPlayMode, DisableIf(nameof(IsTransitioning))] void SoloActiveFromInspector() {
+			Transform parent = transform.parent;
+			UIActivator[] siblingActivators = parent == null
+				? Array.Empty<UIActivator>()
+				: Enumerable.Range(0, parent.childCount)
+					.Select(index => parent.GetChild(index).GetComponent<UIActivator>())
+					.Where(uiActivator => uiActivator != null && uiActivator != this)
+					.ToArray();
+			UIActivator[] affectedActivators = siblingActivators.Append(this).ToArray();
+			EnsureNoneTransitioning(affectedActivators);
+			UnityEngine.Object[] undoTargets = affectedActivators
+				.SelectMany(uiActivator => uiActivator.GetComponents<Component>())
+				.Cast<UnityEngine.Object>()
+				.ToArray();
+			Undo.RecordObjects(undoTargets, "Solo Active UI");
+
+			for (int i = 0; i < siblingActivators.Length; i++) {
+				siblingActivators[i].DeactivateImmediate();
+			}
+			ActiveImmediate();
+
+			foreach (UnityEngine.Object undoTarget in undoTargets) {
+				PrefabUtility.RecordPrefabInstancePropertyModifications(undoTarget);
+				EditorUtility.SetDirty(undoTarget);
+			}
+			if (gameObject.scene.IsValid()) {
+				EditorSceneManager.MarkSceneDirty(gameObject.scene);
+			}
+		}
+		[PropertyOrder(-101), ButtonGroup("Preview Utility", Order = -100), Button("Active"), DisableIf(nameof(IsTransitioning))] void ActiveFromInspector() {
 			if (Application.isPlaying)
 				ActiveAsync(cancellationToken: Application.exitCancellationToken).Forget();
 			else
