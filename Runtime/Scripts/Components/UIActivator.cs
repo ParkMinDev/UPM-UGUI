@@ -14,6 +14,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 #if UNITY_EDITOR
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
@@ -450,7 +451,40 @@ namespace ParkMinPackages.UGUI.Components
 				EditorSceneManager.MarkSceneDirty(gameObject.scene);
 			}
 		}
-		[PropertyOrder(-101), ButtonGroup("Preview Utility", Order = -100), Button("Active"), DisableIf(nameof(IsTransitioning))] void ActiveFromInspector() {
+		[PropertyOrder(-101), ButtonGroup("Preview Utility", Order = -100), Button("Edit Mode"), DisableInPlayMode] void EditModeFromInspector() {
+			Type hierarchyWindowType = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
+			MethodInfo setExpandedRecursive = hierarchyWindowType?.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+				.FirstOrDefault(method => method.Name == "SetExpandedRecursive" && method.GetParameters().Length == 2);
+			MethodInfo getInstanceId = typeof(UnityEngine.Object).GetMethod("GetInstanceID", BindingFlags.Instance | BindingFlags.Public);
+			UnityEngine.Object[] hierarchyWindows = hierarchyWindowType == null
+				? Array.Empty<UnityEngine.Object>()
+				: Resources.FindObjectsOfTypeAll(hierarchyWindowType);
+
+			Transform parent = transform.parent;
+			if (parent != null) {
+				for (int i = 0; i < parent.childCount; i++) {
+					GameObject sibling = parent.GetChild(i).gameObject;
+					if (sibling != gameObject) {
+						SceneVisibilityManager.instance.DisablePicking(sibling, true);
+
+						if (setExpandedRecursive != null && getInstanceId != null) {
+							Type identifierType = setExpandedRecursive.GetParameters()[0].ParameterType;
+							object siblingId = identifierType == typeof(EntityId)
+								? sibling.GetEntityId()
+								: getInstanceId.Invoke(sibling, null);
+							for (int hierarchyWindowIndex = 0; hierarchyWindowIndex < hierarchyWindows.Length; hierarchyWindowIndex++) {
+								setExpandedRecursive.Invoke(hierarchyWindows[hierarchyWindowIndex], new[] { siblingId, (object)false });
+							}
+						}
+					}
+				}
+			}
+
+			SceneVisibilityManager.instance.EnablePicking(gameObject, true);
+			EditorApplication.RepaintHierarchyWindow();
+			SceneView.RepaintAll();
+		}
+		[PropertyOrder(-100), ButtonGroup("Preview Utility", Order = -100), Button("Active"), DisableIf(nameof(IsTransitioning))] void ActiveFromInspector() {
 			if (Application.isPlaying)
 				ActiveAsync(cancellationToken: Application.exitCancellationToken).Forget();
 			else
@@ -458,7 +492,7 @@ namespace ParkMinPackages.UGUI.Components
 
 			EditorUtility.SetDirty(gameObject);
 		}
-		[PropertyOrder(-100), ButtonGroup("Preview Utility", Order = -100), Button("Deactivate"), DisableIf(nameof(IsTransitioning))] void DeactivateFromInspector() {
+		[PropertyOrder(-99), ButtonGroup("Preview Utility", Order = -100), Button("Deactivate"), DisableIf(nameof(IsTransitioning))] void DeactivateFromInspector() {
 			if (Application.isPlaying)
 				DeactivateAsync(cancellationToken: Application.exitCancellationToken).Forget();
 			else
