@@ -314,8 +314,8 @@ namespace ParkMinPackages.UGUI.Components
 		// - Core -
 		[Title("Initial State")]
 		[DisableInPlayMode, SerializeField] bool _startActiveState = true;
-		[DisableInPlayMode, SerializeField] bool _overrideStartAnchoredPosition;
-		[DisableInPlayMode, ShowIf(nameof(_overrideStartAnchoredPosition)), SerializeField] Vector3 _startAnchoredPosition;
+		[DisableInPlayMode, SerializeField, FormerlySerializedAs("_overrideStartLocalPosition")] bool _overrideStartAnchoredPosition;
+		[DisableInPlayMode, ShowIf(nameof(_overrideStartAnchoredPosition)), SerializeField, FormerlySerializedAs("_startLocalPosition")] Vector3 _startAnchoredPosition;
 
 		[Title("Visibility")]
 		[OnValueChanged(nameof(UpdateVisibleAndFade)), SerializeField] bool _visible = true;
