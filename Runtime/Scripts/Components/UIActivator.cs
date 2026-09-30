@@ -290,8 +290,8 @@ namespace ParkMinPackages.UGUI.Components
 		protected override void Awake() {
 			base.Awake();
 
-			if (_overrideStartLocalPosition) {
-				transform.localPosition = _startLocalPosition;
+			if (_overrideStartAnchoredPosition) {
+				((RectTransform)transform).anchoredPosition3D = _startAnchoredPosition;
 			}
 
 			Canvas.enabled = _startActiveState;
@@ -314,8 +314,8 @@ namespace ParkMinPackages.UGUI.Components
 		// - Core -
 		[Title("Initial State")]
 		[DisableInPlayMode, SerializeField] bool _startActiveState = true;
-		[DisableInPlayMode, SerializeField] bool _overrideStartLocalPosition;
-		[DisableInPlayMode, ShowIf(nameof(_overrideStartLocalPosition)), SerializeField] Vector3 _startLocalPosition;
+		[DisableInPlayMode, SerializeField] bool _overrideStartAnchoredPosition;
+		[DisableInPlayMode, ShowIf(nameof(_overrideStartAnchoredPosition)), SerializeField] Vector3 _startAnchoredPosition;
 
 		[Title("Visibility")]
 		[OnValueChanged(nameof(UpdateVisibleAndFade)), SerializeField] bool _visible = true;
