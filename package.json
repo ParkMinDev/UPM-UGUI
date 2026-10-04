@@ -1,11 +1,11 @@
 {
   "name": "com.parkminpackages.ugui",
   "displayName": "ParkMinPackages.UGUI",
-  "version": "15.0.2",
+  "version": "15.0.3",
   "license": "MIT",
-  "documentationUrl": "https://github.com/ParkMinPackages/UGUI#readme",
-  "changelogUrl": "https://github.com/ParkMinPackages/UGUI/blob/main/CHANGELOG.md",
-  "licensesUrl": "https://github.com/ParkMinPackages/UGUI/blob/main/LICENSE.md",
+  "documentationUrl": "https://github.com/ParkMinDev/UGUI#readme",
+  "changelogUrl": "https://github.com/ParkMinDev/UGUI/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/ParkMinDev/UGUI/blob/main/LICENSE.md",
   "unity": "6000.5",
   "description": "ParkMinPackages UGUI package.",
   "dependencies": {
@@ -13,6 +13,6 @@
   },
   "author": {
     "name": "ParkMinPackages",
-    "url": "https://github.com/ParkMinPackages"
+    "url": "https://github.com/ParkMinDev"
   }
 }
