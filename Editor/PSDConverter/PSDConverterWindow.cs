@@ -14,7 +14,7 @@ namespace ParkMinDev.UPM.UGUI.Editor
     public sealed class PSDConverterWindow : EditorWindow
     {
         // - Statics -
-        [MenuItem("ParkMinPackages/PSD Converter")]
+        [MenuItem("ParkMinDev/PSD Converter")]
         public static void Open() {
             PSDConverterWindow window = GetWindow<PSDConverterWindow>();
             window.titleContent = new GUIContent("PSD 변환기");
@@ -23,7 +23,7 @@ namespace ParkMinDev.UPM.UGUI.Editor
         }
         [SettingsProvider]
         public static SettingsProvider CreateSettingsProvider() {
-            return new SettingsProvider("Project/ParkMinPackages/PSD Converter", SettingsScope.Project) {
+            return new SettingsProvider("Project/ParkMinDev/PSD Converter", SettingsScope.Project) {
                 label = "PSD 변환기",
                 guiHandler = search => DrawSettings(PSDConverterSettings.instance),
                 keywords = new HashSet<string> { "PSD", "Fonts", "TextMeshPro", "Legacy", "Canvas" }
