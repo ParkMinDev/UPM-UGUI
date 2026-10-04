@@ -5,8 +5,8 @@
       "packagePath": "",
       "gitDependencies": [
         {
-          "packageName": "com.parkminpackages.foundation",
-          "version": "10.1.4",
+          "packageName": "com.parkmindev.upm.foundation",
+          "version": "10.1.5",
           "url": "https://github.com/ParkMinDev/UPM-Foundation.git"
         },
         {
