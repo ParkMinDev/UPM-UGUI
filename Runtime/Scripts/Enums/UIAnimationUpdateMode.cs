@@ -1,4 +1,4 @@
-namespace ParkMinPackages.UGUI.Enums
+namespace ParkMinDev.UPM.UGUI.Enums
 {
 	public enum UIAnimationUpdateMode
 	{

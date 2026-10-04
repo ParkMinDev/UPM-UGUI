@@ -3,7 +3,7 @@ using LitMotion;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 
-namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations.LitMotions
+namespace ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations.LitMotions
 {
 	[MovedFrom(true, "ParkMinPackages.UGUI.Components.UIActivatorAnimations", "ParkMinPackages.UGUI", "UILMMoveFromShowAnimation")]
 	[DisallowMultipleComponent]

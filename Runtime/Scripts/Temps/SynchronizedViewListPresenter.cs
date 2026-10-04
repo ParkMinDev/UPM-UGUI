@@ -1,11 +1,11 @@
-﻿// using System;
+// using System;
 // using System.Collections.Generic;
 // using System.Collections.Specialized;
 // using ObservableCollections;
-// using ParkMinPackages.UGUI.Interfaces;
+// using ParkMinDev.UPM.UGUI.Interfaces;
 // using UnityEngine;
 //
-// namespace ParkMinPackages.UGUI.Objects
+// namespace ParkMinDev.UPM.UGUI.Objects
 // {
 // 	public interface ISynchronizedViewListPresenter<TModel, TView> :
 // 		IDisposable

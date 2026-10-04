@@ -1,11 +1,11 @@
 #if DOTWEEN && UNITASK_DOTWEEN_SUPPORT
 using DG.Tweening;
-using ParkMinPackages.Foundation.Extensions;
+using ParkMinDev.UPM.Foundation.Extensions;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Serialization;
 
-namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations.DOTweens
+namespace ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations.DOTweens
 {
 	[MovedFrom(true, "ParkMinPackages.UGUI.Components.UIActivatorAnimations", "ParkMinPackages.UGUI", "UIDTFadeShowAnimation")]
 	[DisallowMultipleComponent]

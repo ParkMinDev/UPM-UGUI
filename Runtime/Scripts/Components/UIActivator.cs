@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using ParkMinPackages.Foundation.Components;
-using ParkMinPackages.Foundation.Constants;
-using ParkMinPackages.Foundation.Extensions;
-using ParkMinPackages.UGUI.Components.UIActivatorAnimations;
-using ParkMinPackages.UGUI.Enums;
+using ParkMinDev.UPM.Foundation.Components;
+using ParkMinDev.UPM.Foundation.Constants;
+using ParkMinDev.UPM.Foundation.Extensions;
+using ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations;
+using ParkMinDev.UPM.UGUI.Enums;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,14 +19,15 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 #if DOTWEEN && UNITASK_DOTWEEN_SUPPORT
-using DOTweenAnimations = ParkMinPackages.UGUI.Components.UIActivatorAnimations.DOTweens;
+using DOTweenAnimations = ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations.DOTweens;
 #endif
 #if LITMOTION_SUPPORT
-using LitMotionAnimations = ParkMinPackages.UGUI.Components.UIActivatorAnimations.LitMotions;
+using LitMotionAnimations = ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations.LitMotions;
 #endif
 
-namespace ParkMinPackages.UGUI.Components
+namespace ParkMinDev.UPM.UGUI.Components
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "UIActivator")]
 	[RequireComponent(typeof(Canvas))]
 	[RequireComponent(typeof(CanvasGroup))]
 	[DefaultExecutionOrder(-100)]

@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using ParkMinPackages.UGUI.Interfaces;
+using ParkMinDev.UPM.UGUI.Interfaces;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace ParkMinPackages.UGUI.Components.Views
+namespace ParkMinDev.UPM.UGUI.Components.Views
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.Views", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "PrefabListView")]
 	public class PrefabListView : MonoBehaviour, IPrefabListView
 	{
 		public GameObject Insert(int index) {

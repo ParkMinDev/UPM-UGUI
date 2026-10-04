@@ -3,11 +3,12 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using LitMotion;
-using ParkMinPackages.UGUI.Components.UIActivatorAnimations;
-using ParkMinPackages.UGUI.Enums;
+using ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations;
+using ParkMinDev.UPM.UGUI.Enums;
 
-namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations.LitMotions
+namespace ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations.LitMotions
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.UIActivatorAnimations.LitMotions", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "UILitMotionActiveAnimation")]
 	public abstract class UILitMotionActiveAnimation : ActiveAnimation
 	{
 		public abstract MotionHandle CreateMotion(IMotionScheduler scheduler);
@@ -17,6 +18,7 @@ namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations.LitMotions
 		}
 	}
 
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.UIActivatorAnimations.LitMotions", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "UILitMotionDeactivateAnimation")]
 	public abstract class UILitMotionDeactivateAnimation : DeactivateAnimation
 	{
 		public abstract MotionHandle CreateMotion(IMotionScheduler scheduler);

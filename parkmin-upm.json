@@ -6,7 +6,7 @@
       "gitDependencies": [
         {
           "packageName": "com.parkmindev.upm.foundation",
-          "version": "10.1.5",
+          "version": "11.0.0",
           "url": "https://github.com/ParkMinDev/UPM-Foundation.git"
         },
         {

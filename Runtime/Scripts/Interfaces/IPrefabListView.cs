@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace ParkMinPackages.UGUI.Interfaces
+namespace ParkMinDev.UPM.UGUI.Interfaces
 {
 	public interface IPrefabListView : IReadOnlyList<GameObject>
 	{

@@ -1,11 +1,12 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using ParkMinPackages.Foundation.Components;
+using ParkMinDev.UPM.Foundation.Components;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations
+namespace ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.UIActivatorAnimations", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "UIAnimation")]
 	[RequireComponent(typeof(UIActivator))]
 	public abstract class UIAnimation : ExtendedBehaviour
 	{
@@ -38,6 +39,7 @@ namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations
 		[SerializeField] RectTransform _target;
 	}
 
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.UIActivatorAnimations", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "ActiveAnimation")]
 	public abstract class ActiveAnimation : UIAnimation
 	{
 		protected override void OnEnable() {
@@ -49,6 +51,7 @@ namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations
 			UIActivator.UnregisterActiveAnimation(this);
 		}
 	}
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.UIActivatorAnimations", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "DeactivateAnimation")]
 	public abstract class DeactivateAnimation : UIAnimation
 	{
 		protected override void OnEnable() {

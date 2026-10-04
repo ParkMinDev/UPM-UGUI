@@ -1,11 +1,12 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using UnityEditor;
 using UnityEditor.UI;
 using UnityEngine;
 
-namespace ParkMinPackages.UGUI.Components.Views
+namespace ParkMinDev.UPM.UGUI.Components.Views
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.Views", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "GameObjectTransitionButtonEditor")]
 	[CustomEditor(typeof(GameObjectTransitionButton))]
 	public class GameObjectTransitionButtonEditor : ButtonEditor
 	{

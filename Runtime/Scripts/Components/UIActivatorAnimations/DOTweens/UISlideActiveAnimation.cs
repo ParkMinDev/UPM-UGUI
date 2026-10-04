@@ -1,11 +1,11 @@
-﻿#if DOTWEEN && UNITASK_DOTWEEN_SUPPORT
+#if DOTWEEN && UNITASK_DOTWEEN_SUPPORT
 using System;
 using DG.Tweening;
-using ParkMinPackages.UGUI.Enums;
+using ParkMinDev.UPM.UGUI.Enums;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 
-namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations.DOTweens
+namespace ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations.DOTweens
 {
 	[MovedFrom(true, "ParkMinPackages.UGUI.Components.UIActivatorAnimations", "ParkMinPackages.UGUI", "UIDTSlideShowAnimation")]
 	[DisallowMultipleComponent]

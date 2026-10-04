@@ -1,4 +1,4 @@
-﻿// namespace ParkMinPackages.UGUI.Interfaces
+// namespace ParkMinDev.UPM.UGUI.Interfaces
 // {
 // 	public interface ISyncronizedViewItem<TData>
 // 	{

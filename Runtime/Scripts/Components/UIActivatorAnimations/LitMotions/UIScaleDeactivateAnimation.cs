@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Serialization;
 
-namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations.LitMotions
+namespace ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations.LitMotions
 {
 	[MovedFrom(true, "ParkMinPackages.UGUI.Components.UIActivatorAnimations", "ParkMinPackages.UGUI", "UILMScaleHideAnimation")]
 	[DisallowMultipleComponent]

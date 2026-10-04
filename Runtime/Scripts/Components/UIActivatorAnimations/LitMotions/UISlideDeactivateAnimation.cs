@@ -1,11 +1,11 @@
 #if LITMOTION_SUPPORT
 using System;
 using LitMotion;
-using ParkMinPackages.UGUI.Enums;
+using ParkMinDev.UPM.UGUI.Enums;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 
-namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations.LitMotions
+namespace ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations.LitMotions
 {
 	[MovedFrom(true, "ParkMinPackages.UGUI.Components.UIActivatorAnimations", "ParkMinPackages.UGUI", "UILMSlideHideAnimation")]
 	[DisallowMultipleComponent]

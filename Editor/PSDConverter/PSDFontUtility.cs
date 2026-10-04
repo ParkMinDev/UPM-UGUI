@@ -8,7 +8,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-namespace ParkMinPackages.UGUI.Editor
+namespace ParkMinDev.UPM.UGUI.Editor
 {
     public sealed class PSDFontInfo
     {

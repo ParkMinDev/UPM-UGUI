@@ -8,8 +8,9 @@ using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Search;
 
-namespace ParkMinPackages.UGUI.Editor
+namespace ParkMinDev.UPM.UGUI.Editor
 {
+    [UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Editor", sourceAssembly: "ParkMinPackages.UGUI.Editor", sourceClassName: "PSDConverterWindow")]
     public sealed class PSDConverterWindow : EditorWindow
     {
         // - Statics -

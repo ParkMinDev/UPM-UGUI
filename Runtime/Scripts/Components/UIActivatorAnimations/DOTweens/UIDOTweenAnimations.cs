@@ -3,11 +3,12 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using ParkMinPackages.UGUI.Components.UIActivatorAnimations;
-using ParkMinPackages.UGUI.Enums;
+using ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations;
+using ParkMinDev.UPM.UGUI.Enums;
 
-namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations.DOTweens
+namespace ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations.DOTweens
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.UIActivatorAnimations.DOTweens", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "UIDOTweenActiveAnimation")]
 	public abstract class UIDOTweenActiveAnimation : ActiveAnimation
 	{
 		public abstract Tween CreateTween();
@@ -16,6 +17,7 @@ namespace ParkMinPackages.UGUI.Components.UIActivatorAnimations.DOTweens
 			await tween.SetAutoKill(true).ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
 		}
 	}
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.UIActivatorAnimations.DOTweens", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "UIDOTweenDeactivateAnimation")]
 	public abstract class UIDOTweenDeactivateAnimation : DeactivateAnimation
 	{
 		public abstract Tween CreateTween();

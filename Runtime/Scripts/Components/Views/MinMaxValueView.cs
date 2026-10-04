@@ -3,8 +3,9 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ParkMinPackages.UGUI.Components.Views
+namespace ParkMinDev.UPM.UGUI.Components.Views
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components.Views", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "MinMaxValueView")]
 	public class MinMaxValueView : MonoBehaviour
 	{
 		// - Public Properties-

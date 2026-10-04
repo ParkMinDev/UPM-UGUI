@@ -5,11 +5,12 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-namespace ParkMinPackages.UGUI.Editor
+namespace ParkMinDev.UPM.UGUI.Editor
 {
     public enum PSDMissingFontPolicy { [InspectorName("대체 폰트 사용")] UseDefaultFallback, [InspectorName("이미지로 유지")] KeepAsImage }
     public enum PSDTextOutput { [InspectorName("레거시")] Legacy, [InspectorName("TMP")] TextMeshPro }
 
+    [UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Editor", sourceAssembly: "ParkMinPackages.UGUI.Editor", sourceClassName: "PSDFontMapping")]
     [Serializable]
     public sealed class PSDFontMapping
     {
@@ -27,6 +28,7 @@ namespace ParkMinPackages.UGUI.Editor
         [SerializeField] TMP_FontAsset _tmpFont;
     }
 
+    [UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Editor", sourceAssembly: "ParkMinPackages.UGUI.Editor", sourceClassName: "PSDConverterSettings")]
     [FilePath("ProjectSettings/ParkMinPackages.PSDConverter.asset", FilePathAttribute.Location.ProjectFolder)]
     public sealed class PSDConverterSettings : ScriptableSingleton<PSDConverterSettings>
     {

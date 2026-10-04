@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ObservableCollections;
-using ParkMinPackages.UGUI.Interfaces;
+using ParkMinDev.UPM.UGUI.Interfaces;
 using R3;
 using UnityEngine;
 
-namespace ParkMinPackages.UGUI.Objects.UILogics
+namespace ParkMinDev.UPM.UGUI.Objects.UILogics
 {
 	public class ObservableCollectionPrefabListSynchronizer<TModel, TView> : IDisposable
 		where TView : MonoBehaviour

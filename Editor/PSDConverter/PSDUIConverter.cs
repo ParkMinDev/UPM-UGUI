@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace ParkMinPackages.UGUI.Editor
+namespace ParkMinDev.UPM.UGUI.Editor
 {
     public sealed class PSDImportLayer
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace ParkMinPackages.UGUI.Editor
+namespace ParkMinDev.UPM.UGUI.Editor
 {
     public sealed class PSDDocument
     {
