@@ -4,6 +4,12 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [16.1.0] - 2026-10-19
+
+### Added
+- Added AngleGraphic with shared serializable appearance options, configurable sectors, guides, vertex markers and a three-point angle API.
+- Added AngleCalloutLineGraphic to connect the arc midpoint to a label boundary using a straight or elbow connector, including source and target transforms.
+
 ## [16.0.1] - 2026-10-04
 
 ### Changed
