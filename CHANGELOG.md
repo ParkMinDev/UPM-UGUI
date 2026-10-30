@@ -4,6 +4,15 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [16.2.0] - 2026-10-31
+
+### Added
+- Move ContentSizeFitter2 from MIN Wallet into ParkMinDev.UPM.UGUI.Components, preserving its script GUID, serialized fit settings and parent-layout ownership behavior. Record its previous namespace and assembly with MovedFrom.
+- Provide the existing ContentSizeFitter2 inspector in the Editor assembly.
+
+### Changed
+- Require Unity 6000.6 and Unity UI 2.6.0 for Clamped fitting and maximum layout dimensions.
+
 ## [16.1.2] - 2026-10-27
 
 ### Changed

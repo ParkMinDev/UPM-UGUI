@@ -1,15 +1,15 @@
 {
   "name": "com.parkmindev.upm.ugui",
   "displayName": "ParkMinDev.UPM.UGUI",
-  "version": "16.1.2",
+  "version": "16.2.0",
   "license": "MIT",
   "documentationUrl": "https://github.com/ParkMinDev/UPM-UGUI#readme",
   "changelogUrl": "https://github.com/ParkMinDev/UPM-UGUI/blob/main/CHANGELOG.md",
   "licensesUrl": "https://github.com/ParkMinDev/UPM-UGUI/blob/main/LICENSE.md",
-  "unity": "6000.5",
+  "unity": "6000.6",
   "description": "ParkMinPackages UGUI package.",
   "dependencies": {
-    "com.unity.ugui": "2.5.0"
+    "com.unity.ugui": "2.6.0"
   },
   "author": {
     "name": "ParkMinDev",
