@@ -4,6 +4,19 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [16.3.0] - 2026-10-31
+
+### Added
+- Support UIActivator without a local Canvas through a read-only Render property that applies CanvasGroup visibility and input state, while continuing to toggle an optional Canvas.
+- Add edit-only Add Canvas and Add GraphicRaycaster inspector buttons with duplicate prevention and Undo support. Adding a raycaster also adds a missing Canvas in one Undo group.
+
+### Changed
+- Initialize CanvasGroup.ignoreParentGroups to false and preserve the configurable transition input-blocking behavior across nested UIActivators.
+- Prepare normal opacity before capturing activation animations and restore deactivation animations before applying the final hidden state. Visible and Fade remain independent from input permission.
+
+### Removed
+- Remove the Edit Mode inspector button, sibling scene-picking restrictions and hierarchy collapsing, along with their reflection implementation.
+
 ## [16.2.0] - 2026-10-31
 
 ### Added

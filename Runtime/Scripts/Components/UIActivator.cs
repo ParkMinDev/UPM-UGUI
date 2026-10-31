@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using ParkMinDev.UPM.Foundation.Components;
-using ParkMinDev.UPM.Foundation.Constants;
 using ParkMinDev.UPM.Foundation.Extensions;
 using ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations;
 using ParkMinDev.UPM.UGUI.Enums;
@@ -12,9 +11,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-
 #if UNITY_EDITOR
-using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
@@ -28,7 +25,6 @@ using LitMotionAnimations = ParkMinDev.UPM.UGUI.Components.UIActivatorAnimations
 namespace ParkMinDev.UPM.UGUI.Components
 {
 	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.UGUI.Components", sourceAssembly: "ParkMinPackages.UGUI", sourceClassName: "UIActivator")]
-	[RequireComponent(typeof(Canvas))]
 	[RequireComponent(typeof(CanvasGroup))]
 	[DefaultExecutionOrder(-100)]
 	[DisallowMultipleComponent]
@@ -52,14 +48,13 @@ namespace ParkMinDev.UPM.UGUI.Components
 
 			SetLayoutIgnored(false);
 			ActiveAnimation[] activeAnimations = _activeAnimations.ToArray();
-			Capture(activeAnimations);
 			_isTransitioning = true;
 			UpdateRaycastable();
 
 			try {
-				Canvas.enabled = false;
+				Render = true;
+				Capture(activeAnimations);
 				UniTask[] animationTasks = ExecuteAnimations(activeAnimations, cancellationToken);
-				Canvas.enabled = true;
 				await UniTask.WhenAll(animationTasks);
 				cancellationToken.ThrowIfCancellationRequested();
 				Restore(activeAnimations);
@@ -71,7 +66,7 @@ namespace ParkMinDev.UPM.UGUI.Components
 			}
 			catch {
 				Restore(activeAnimations);
-				Canvas.enabled = false;
+				Render = false;
 				throw;
 			}
 			finally {
@@ -100,12 +95,12 @@ namespace ParkMinDev.UPM.UGUI.Components
 			UpdateRaycastable();
 
 			try {
-				Canvas.enabled = true;
+				Render = true;
 				UniTask[] animationTasks = ExecuteAnimations(deactivateAnimations, cancellationToken);
 				await UniTask.WhenAll(animationTasks);
 				cancellationToken.ThrowIfCancellationRequested();
-				Canvas.enabled = false;
 				Restore(deactivateAnimations);
+				Render = false;
 				_state = UIActivationState.Inactive;
 			}
 			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
@@ -114,7 +109,7 @@ namespace ParkMinDev.UPM.UGUI.Components
 			}
 			catch {
 				Restore(deactivateAnimations);
-				Canvas.enabled = true;
+				Render = true;
 				throw;
 			}
 			finally {
@@ -128,7 +123,7 @@ namespace ParkMinDev.UPM.UGUI.Components
 				throw new InvalidOperationException($"{nameof(UIActivator)} '{name}' is already transitioning.");
 			}
 			SetLayoutIgnored(false);
-			Canvas.enabled = true;
+			Render = true;
 			_state = UIActivationState.Active;
 			UpdateRaycastable();
 		}
@@ -136,7 +131,7 @@ namespace ParkMinDev.UPM.UGUI.Components
 			if (_isTransitioning) {
 				throw new InvalidOperationException($"{nameof(UIActivator)} '{name}' is already transitioning.");
 			}
-			Canvas.enabled = false;
+			Render = false;
 			_state = UIActivationState.Inactive;
 			SetLayoutIgnored(true);
 			UpdateRaycastable();
@@ -200,6 +195,22 @@ namespace ParkMinDev.UPM.UGUI.Components
 
 		// ===================== Public Property =====================
 
+		public bool Render
+		{
+			get { return _render; }
+			private set
+			{
+				_render = value;
+
+				if (Canvas != null) {
+					Canvas.enabled = _render;
+				}
+
+				UpdateVisibleAndFade();
+				UpdateRaycastable();
+				UpdateInteractable();
+			}
+		}
 		public bool Visible
 		{
 			get { return _visible; }
@@ -290,12 +301,14 @@ namespace ParkMinDev.UPM.UGUI.Components
 
 		protected override void Awake() {
 			base.Awake();
-
+			
+			CanvasGroup.ignoreParentGroups = false;
+			
 			if (_overrideStartAnchoredPosition) {
 				((RectTransform)transform).anchoredPosition3D = _startAnchoredPosition;
 			}
 
-			Canvas.enabled = _startActiveState;
+			Render = _startActiveState;
 			_state = _startActiveState ? UIActivationState.Active : UIActivationState.Inactive;
 			_layoutElement = GetComponent<LayoutElement>();
 			SetLayoutIgnored(_state == UIActivationState.Inactive);
@@ -334,6 +347,7 @@ namespace ParkMinDev.UPM.UGUI.Components
 		[SerializeField] UIAnimationUpdateMode _updateMode;
 		[SerializeField] bool _ignoreTimeScale;
 
+		bool _render;
 		UIActivationState _state;
 		bool _isTransitioning;
 
@@ -364,11 +378,11 @@ namespace ParkMinDev.UPM.UGUI.Components
 			Restore(activeAnimations);
 			switch (animationCancelBehaviour) {
 				case AnimationCancelBehaviour.Complete:
-					Canvas.enabled = true;
+					Render = true;
 					_state = UIActivationState.Active;
 					break;
 				case AnimationCancelBehaviour.ResetToStart:
-					Canvas.enabled = false;
+					Render = false;
 					_state = UIActivationState.Inactive;
 					break;
 				default:
@@ -382,11 +396,11 @@ namespace ParkMinDev.UPM.UGUI.Components
 			Restore(deactivateAnimations);
 			switch (animationCancelBehaviour) {
 				case AnimationCancelBehaviour.Complete:
-					Canvas.enabled = false;
+					Render = false;
 					_state = UIActivationState.Inactive;
 					break;
 				case AnimationCancelBehaviour.ResetToStart:
-					Canvas.enabled = true;
+					Render = true;
 					_state = UIActivationState.Active;
 					break;
 				default:
@@ -401,15 +415,16 @@ namespace ParkMinDev.UPM.UGUI.Components
 			}
 		}
 		void UpdateVisibleAndFade() {
-			CanvasGroup.alpha = _visible ? _fade : 0f;
+			CanvasGroup.alpha = _render && _visible ? _fade : 0f;
 		}
 		void UpdateRaycastable() {
 			CanvasGroup.blocksRaycasts =
+				_render &&
 				_raycastable &&
 				(_disableRaycastWhileAnimation == false || _isTransitioning == false);
 		}
 		void UpdateInteractable() {
-			CanvasGroup.interactable = _interactable;
+			CanvasGroup.interactable = _render && _interactable;
 		}
 		void UpdateLayoutParticipation() {
 			if (_layoutElement == null)
@@ -423,20 +438,35 @@ namespace ParkMinDev.UPM.UGUI.Components
 		}
 
 #if UNITY_EDITOR
+		[PropertyOrder(-112), ButtonGroup("Component Utility", Order = -110), Button("Add Canvas"), DisableInPlayMode, DisableIf("@Canvas != null")] void AddCanvasFromInspector() {
+			if (Canvas != null) return;
+			Undo.AddComponent<Canvas>(gameObject);
+		}
+		[PropertyOrder(-111), ButtonGroup("Component Utility", Order = -110), Button("Add GraphicRaycaster"), PropertyTooltip("Canvas가 없으면 Canvas도 함께 추가됩니다."), DisableInPlayMode, DisableIf("@this.GetComponent<UnityEngine.UI.GraphicRaycaster>() != null")] void AddGraphicRaycasterFromInspector() {
+			if (GetComponent<UnityEngine.UI.GraphicRaycaster>() != null) return;
+
+			Undo.IncrementCurrentGroup();
+			int undoGroup = Undo.GetCurrentGroup();
+			Undo.SetCurrentGroupName("Add UI Graphic Raycaster");
+			if (Canvas == null) Undo.AddComponent<Canvas>(gameObject);
+			Undo.AddComponent<UnityEngine.UI.GraphicRaycaster>(gameObject);
+			Undo.CollapseUndoOperations(undoGroup);
+		}
+
 		[PropertyOrder(-102), ButtonGroup("Preview Utility", Order = -100), Button("Solo Active"), DisableInPlayMode, DisableIf(nameof(IsTransitioning))] void SoloActiveFromInspector() {
 			Transform parent = transform.parent;
 			UIActivator[] siblingActivators = parent == null
 				? Array.Empty<UIActivator>()
 				: Enumerable.Range(0, parent.childCount)
-					.Select(index => parent.GetChild(index).GetComponent<UIActivator>())
-					.Where(uiActivator => uiActivator != null && uiActivator != this)
-					.ToArray();
+				            .Select(index => parent.GetChild(index).GetComponent<UIActivator>())
+				            .Where(uiActivator => uiActivator != null && uiActivator != this)
+				            .ToArray();
 			UIActivator[] affectedActivators = siblingActivators.Append(this).ToArray();
 			EnsureNoneTransitioning(affectedActivators);
 			UnityEngine.Object[] undoTargets = affectedActivators
-				.SelectMany(uiActivator => uiActivator.GetComponents<Component>())
-				.Cast<UnityEngine.Object>()
-				.ToArray();
+			                                  .SelectMany(uiActivator => uiActivator.GetComponents<Component>())
+			                                  .Cast<UnityEngine.Object>()
+			                                  .ToArray();
 			Undo.RecordObjects(undoTargets, "Solo Active UI");
 
 			for (int i = 0; i < siblingActivators.Length; i++) {
@@ -451,39 +481,6 @@ namespace ParkMinDev.UPM.UGUI.Components
 			if (gameObject.scene.IsValid()) {
 				EditorSceneManager.MarkSceneDirty(gameObject.scene);
 			}
-		}
-		[PropertyOrder(-101), ButtonGroup("Preview Utility", Order = -100), Button("Edit Mode"), DisableInPlayMode] void EditModeFromInspector() {
-			Type hierarchyWindowType = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
-			MethodInfo setExpandedRecursive = hierarchyWindowType?.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.FirstOrDefault(method => method.Name == "SetExpandedRecursive" && method.GetParameters().Length == 2);
-			MethodInfo getInstanceId = typeof(UnityEngine.Object).GetMethod("GetInstanceID", BindingFlags.Instance | BindingFlags.Public);
-			UnityEngine.Object[] hierarchyWindows = hierarchyWindowType == null
-				? Array.Empty<UnityEngine.Object>()
-				: Resources.FindObjectsOfTypeAll(hierarchyWindowType);
-
-			Transform parent = transform.parent;
-			if (parent != null) {
-				for (int i = 0; i < parent.childCount; i++) {
-					GameObject sibling = parent.GetChild(i).gameObject;
-					if (sibling != gameObject) {
-						SceneVisibilityManager.instance.DisablePicking(sibling, true);
-
-						if (setExpandedRecursive != null && getInstanceId != null) {
-							Type identifierType = setExpandedRecursive.GetParameters()[0].ParameterType;
-							object siblingId = identifierType == typeof(EntityId)
-								? sibling.GetEntityId()
-								: getInstanceId.Invoke(sibling, null);
-							for (int hierarchyWindowIndex = 0; hierarchyWindowIndex < hierarchyWindows.Length; hierarchyWindowIndex++) {
-								setExpandedRecursive.Invoke(hierarchyWindows[hierarchyWindowIndex], new[] { siblingId, (object)false });
-							}
-						}
-					}
-				}
-			}
-
-			SceneVisibilityManager.instance.EnablePicking(gameObject, true);
-			EditorApplication.RepaintHierarchyWindow();
-			SceneView.RepaintAll();
 		}
 		[PropertyOrder(-100), ButtonGroup("Preview Utility", Order = -100), Button("Active"), DisableIf(nameof(IsTransitioning))] void ActiveFromInspector() {
 			if (Application.isPlaying)
@@ -505,27 +502,41 @@ namespace ParkMinDev.UPM.UGUI.Components
 #if DOTWEEN && UNITASK_DOTWEEN_SUPPORT
 		[FoldoutGroup("Add Animation Utility", Order = 100)]
 		[TitleGroup("Add Animation Utility/DOTween")]
-		[ButtonGroup("Add Animation Utility/DOTween/Buttons"), Button("Fade")] void AddDOTweenFadeAnimations() => AddAnimationPair<DOTweenAnimations.UIFadeActiveAnimation, DOTweenAnimations.UIFadeDeactivateAnimation>();
+		[ButtonGroup("Add Animation Utility/DOTween/Buttons"), Button("Fade")] void AddDOTweenFadeAnimations() {
+			AddAnimationPair<DOTweenAnimations.UIFadeActiveAnimation, DOTweenAnimations.UIFadeDeactivateAnimation>();
+		}
 		[FoldoutGroup("Add Animation Utility", Order = 100)]
 		[TitleGroup("Add Animation Utility/DOTween")]
-		[ButtonGroup("Add Animation Utility/DOTween/Buttons"), Button("Scale")] void AddDOTweenScaleAnimations() => AddAnimationPair<DOTweenAnimations.UIScaleActiveAnimation, DOTweenAnimations.UIScaleDeactivateAnimation>();
+		[ButtonGroup("Add Animation Utility/DOTween/Buttons"), Button("Scale")] void AddDOTweenScaleAnimations() {
+			AddAnimationPair<DOTweenAnimations.UIScaleActiveAnimation, DOTweenAnimations.UIScaleDeactivateAnimation>();
+		}
 		[FoldoutGroup("Add Animation Utility", Order = 100)]
 		[TitleGroup("Add Animation Utility/DOTween")]
-		[ButtonGroup("Add Animation Utility/DOTween/Buttons"), Button("Slide")] void AddDOTweenSlideAnimations() => AddAnimationPair<DOTweenAnimations.UISlideActiveAnimation, DOTweenAnimations.UISlideDeactivateAnimation>();
+		[ButtonGroup("Add Animation Utility/DOTween/Buttons"), Button("Slide")] void AddDOTweenSlideAnimations() {
+			AddAnimationPair<DOTweenAnimations.UISlideActiveAnimation, DOTweenAnimations.UISlideDeactivateAnimation>();
+		}
 #endif
 #if LITMOTION_SUPPORT
 		[FoldoutGroup("Add Animation Utility", Order = 100)]
 		[TitleGroup("Add Animation Utility/LitMotion")]
-		[ButtonGroup("Add Animation Utility/LitMotion/Buttons"), Button("Fade")] void AddLitMotionFadeAnimations() => AddAnimationPair<LitMotionAnimations.UIFadeActiveAnimation, LitMotionAnimations.UIFadeDeactivateAnimation>();
+		[ButtonGroup("Add Animation Utility/LitMotion/Buttons"), Button("Fade")] void AddLitMotionFadeAnimations() {
+			AddAnimationPair<LitMotionAnimations.UIFadeActiveAnimation, LitMotionAnimations.UIFadeDeactivateAnimation>();
+		}
 		[FoldoutGroup("Add Animation Utility", Order = 100)]
 		[TitleGroup("Add Animation Utility/LitMotion")]
-		[ButtonGroup("Add Animation Utility/LitMotion/Buttons"), Button("Scale")] void AddLitMotionScaleAnimations() => AddAnimationPair<LitMotionAnimations.UIScaleActiveAnimation, LitMotionAnimations.UIScaleDeactivateAnimation>();
+		[ButtonGroup("Add Animation Utility/LitMotion/Buttons"), Button("Scale")] void AddLitMotionScaleAnimations() {
+			AddAnimationPair<LitMotionAnimations.UIScaleActiveAnimation, LitMotionAnimations.UIScaleDeactivateAnimation>();
+		}
 		[FoldoutGroup("Add Animation Utility", Order = 100)]
 		[TitleGroup("Add Animation Utility/LitMotion")]
-		[ButtonGroup("Add Animation Utility/LitMotion/Buttons"), Button("Slide")] void AddLitMotionSlideAnimations() => AddAnimationPair<LitMotionAnimations.UISlideActiveAnimation, LitMotionAnimations.UISlideDeactivateAnimation>();
+		[ButtonGroup("Add Animation Utility/LitMotion/Buttons"), Button("Slide")] void AddLitMotionSlideAnimations() {
+			AddAnimationPair<LitMotionAnimations.UISlideActiveAnimation, LitMotionAnimations.UISlideDeactivateAnimation>();
+		}
 		[FoldoutGroup("Add Animation Utility", Order = 100)]
 		[TitleGroup("Add Animation Utility/LitMotion")]
-		[ButtonGroup("Add Animation Utility/LitMotion/Buttons"), Button("Move From")] void AddLitMotionMoveFromAnimations() => AddAnimationPair<LitMotionAnimations.UIMoveFromActiveAnimation, LitMotionAnimations.UIMoveFromDeactivateAnimation>();
+		[ButtonGroup("Add Animation Utility/LitMotion/Buttons"), Button("Move From")] void AddLitMotionMoveFromAnimations() {
+			AddAnimationPair<LitMotionAnimations.UIMoveFromActiveAnimation, LitMotionAnimations.UIMoveFromDeactivateAnimation>();
+		}
 #endif
 
 		void AddAnimationPair<TActiveAnimation, TDeactivateAnimation>() where TActiveAnimation : Component where TDeactivateAnimation : Component {
